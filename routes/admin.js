@@ -5,6 +5,8 @@ var mongoose = require('mongoose');
 var sizeof = require('object-sizeof');
 var Schema = mongoose.Schema;
 var fs = require('fs');
+const cors = require('cors');
+router.use(cors());
 
 
 var MongoClient = mongodb.MongoClient;
@@ -173,6 +175,7 @@ router.post('/adminvalidatesignupfield', function (req, res) {
 /* create admin users for login in admin portal*/
 
 router.post('/createadminusers', function (req, res) {
+  console.log("UserName::::::::::::::::::::::::::::::::::");
 
     var username = req.body.username;
     var email = req.body.email;
@@ -181,6 +184,8 @@ router.post('/createadminusers', function (req, res) {
     var confpassword = req.body.confpassword;
     var address = req.body.addData;
     var orgname = req.body.orgname;
+
+  
 
     MongoClient.connect(url, function (err, db) {
         if (err) {
@@ -211,6 +216,8 @@ router.post('/createadminusers', function (req, res) {
 
         }
     });
+      console.log("UserName::::::::::::::::::::::::::::::::::");
+
     res.end("OK");
 });
 
