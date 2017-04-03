@@ -19,7 +19,7 @@ router.post('/uploadbimage', function (req, res) {
         email: req.query.email
     };
 
-  
+
 
     MongoClient.connect(url, function (err, db) {
         if (err) {
@@ -65,7 +65,7 @@ router.post('/uploadbimage', function (req, res) {
             //always use forward slashes while giving the file path in windows
             var imgPath = '/AddServer/AddServer/routes/img.PNG';
 
-            console.log("Imagepath   "+req.body.imgPath+"   "+req.body.shopName+"   "+req.body.shopAddress+"   "+req.body.price);
+            console.log("Imagepath   " + req.body.imgPath + "   " + req.body.shopName + "   " + req.body.shopAddress + "   " + req.body.price);
 
             //read binary data
             var imgBitmap = fs.readFileSync(imgPath);
@@ -73,10 +73,10 @@ router.post('/uploadbimage', function (req, res) {
             var base64 = new Buffer(imgBitmap).toString('base64');
 
             var shopName = req.body.shopName;
-            var shopAddress = req.body.shopAddress; 
+            var shopAddress = req.body.shopAddress;
             var description = req.body.description;
             var price = req.body.price;
-            
+
 
             // these are the data need to be inserted inside the admin collection
             // var shopName = "MyShop";
@@ -88,7 +88,7 @@ router.post('/uploadbimage', function (req, res) {
             var addData = { shopName: '' + shopName, shopAddress: '' + shopAddress, description: '' + description, price: '' + price, base64: '' + base64 };
 
             //store it in admin collection 
-            
+
             collection.insert([addData], function (err, result) {
                 if (err) {
                     console.log(err);
@@ -108,5 +108,114 @@ router.post('/uploadbimage', function (req, res) {
 
     res.end("OK");
 });
+
+/* validate the signup field*/
+router.post('/adminvalidatesignupfield', function (req, res) {
+
+    var username = req.body.username;
+    var email = req.body.email;
+    var confemail = req.body.confemail;
+    var password = req.body.password;
+    var confpassword = req.body.confpassword;
+    var address = req.body.addData;
+    var orgname = req.body.orgname;
+
+    if (username === '') {
+        res.send('username blank!!');
+        res.end('username blank!!!!');
+    }
+
+    if (email === '') {
+        res.send('email blank!!');
+        res.end('email blank!!!!');
+
+    }
+
+    if (confemail === '') {
+        res.send('confemail blank!!');
+        res.end('confemail blank!!!!');
+
+    }
+
+    if (password === '') {
+        res.send('password blank!!');
+        res.end('password blank!!!!');
+    }
+
+    if (confpassword === '') {
+        res.send('confpassword blank!!');
+        res.end('confpassword blank!!!!');
+    }
+
+    if (address === '') {
+        res.send('address blank!!');
+        res.end('address blank!!!!');
+    }
+
+    if (orgname === '') {
+        res.send('orgname blank!!');
+        res.end('orgname blank!!!!');
+    }
+
+    if (password != confpassword) {
+        res.send('password do not match!!');
+        res.end('password do not match!!');
+    }
+
+    if (email != confemail) {
+        res.send('email do not match!!');
+        res.end('email do not match!!');
+    }
+
+    res.end("OK");
+});
+
+/* create admin users for login in admin portal*/
+
+router.post('/createadminusers', function (req, res) {
+
+    var username = req.body.username;
+    var email = req.body.email;
+    var confemail = req.body.confemail;
+    var password = req.body.password;
+    var confpassword = req.body.confpassword;
+    var address = req.body.addData;
+    var orgname = req.body.orgname;
+
+    MongoClient.connect(url, function (err, db) {
+        if (err) {
+            console.log('Unable to connect to the mongoDB server. Error:', err);
+        } else {
+            //connection establish
+            console.log('Connection established to', url);
+
+            // Get the documents collection
+            var collection = db.collection('admin-users-profile');
+
+            //user detail object
+            var user1 = {
+                username: '' + username, email: '' + email, password: '' + password, address: '' + address, orgname: '' + orgname
+            };
+
+
+            // Insert some users
+            collection.insert([user1], function (err, result) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    console.log('Inserted %d documeents into the "users" collection. The documents inserted with "_id" are:', result.length, result);
+                }
+                //Close connection
+                db.close();
+            });
+
+        }
+    });
+    res.end("OK");
+});
+
+
+
+
 
 module.exports = router;

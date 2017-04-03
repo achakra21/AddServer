@@ -15,6 +15,8 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 
 var admin = require('./routes/admin');
+
+var util = require('./routes/util');
  
 var app = express();
 
@@ -40,6 +42,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', routes);
 app.use('/', users);
 app.use('/', admin);
+app.use('/', util);
 console.log("The Value of Appadadasd",""+ app);
  
 // catch 404 and forward to error handler
@@ -74,5 +77,9 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
+
+app.listen(3003, function () {
+  console.log('Addserver app listening on port 3003!')
+})
  
 module.exports = app;
