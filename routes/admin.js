@@ -7,6 +7,7 @@ var Schema = mongoose.Schema;
 var fs = require('fs');
 const cors = require('cors');
 router.use(cors());
+var cloudinary = require('cloudinary');
 
 
 var MongoClient = mongodb.MongoClient;
@@ -16,6 +17,15 @@ var url = 'mongodb://localhost:27017/AddServer';
 
 
 router.post('/uploadbimage', function (req, res) {
+
+    cloudinary.config({
+        cloud_name: 'achakra21',
+        api_key: '895512187215172',
+        api_secret: 'i1wPd-dI0uX9BUh__Da_MMAD7kg'
+    });
+    cloudinary.uploader.upload("/AddServer/AddServer/routes/img.PNG", function(result) { 
+  console.log(result) 
+});
 
     response = {
         email: req.query.email
@@ -37,13 +47,13 @@ router.post('/uploadbimage', function (req, res) {
                     .next(function (err, collinfo) {
                         if (collinfo) {
                             isCollectionExists = true;
-                            console.log("Collection exists");
+                          //  console.log("Collection exists");
                             resolve(isCollectionExists);
 
                         }
 
                         else {
-                            console.log("Collection does not exists");
+                           // console.log("Collection does not exists");
                         }
                     });
 
@@ -52,12 +62,12 @@ router.post('/uploadbimage', function (req, res) {
             find.then(function (disCollectionExistsb) {
 
                 if (isCollectionExists === false) {
-                    console.log("inside if block");
+                   // console.log("inside if block");
                     db.createCollection("admin", function (err, collection) {
                         if (err) throw err;
 
-                        console.log("Created admin collection");
-                        console.log(collection);
+                        //console.log("Created admin collection");
+                        //console.log(collection);
                     });
                 }
             });
@@ -67,7 +77,7 @@ router.post('/uploadbimage', function (req, res) {
             //always use forward slashes while giving the file path in windows
             var imgPath = '/AddServer/AddServer/routes/img.PNG';
 
-            console.log("Imagepath   " + req.body.imgPath + "   " + req.body.shopName + "   " + req.body.shopAddress + "   " + req.body.price);
+            //console.log("Imagepath   " + req.body.imgPath + "   " + req.body.shopName + "   " + req.body.shopAddress + "   " + req.body.price);
 
             //read binary data
             var imgBitmap = fs.readFileSync(imgPath);
@@ -95,7 +105,7 @@ router.post('/uploadbimage', function (req, res) {
                 if (err) {
                     console.log(err);
                 } else {
-                    console.log('Inserted %d documeents into the "users" collection. The documents inserted with "_id" are:', result.length, result);
+                   // console.log('Inserted %d documeents into the "users" collection. The documents inserted with "_id" are:', result.length, result);
                 }
                 //Close connection
                 db.close();
@@ -175,7 +185,7 @@ router.post('/adminvalidatesignupfield', function (req, res) {
 /* create admin users for login in admin portal*/
 
 router.post('/createadminusers', function (req, res) {
-  console.log("UserName::::::::::::::::::::::::::::::::::");
+    console.log("UserName::::::::::::::::::::::::::::::::::");
 
     var username = req.body.username;
     var email = req.body.email;
@@ -185,7 +195,7 @@ router.post('/createadminusers', function (req, res) {
     var address = req.body.addData;
     var orgname = req.body.orgname;
 
-  
+
 
     MongoClient.connect(url, function (err, db) {
         if (err) {
@@ -216,7 +226,7 @@ router.post('/createadminusers', function (req, res) {
 
         }
     });
-      console.log("UserName::::::::::::::::::::::::::::::::::");
+    console.log("UserName::::::::::::::::::::::::::::::::::");
 
     res.end("OK");
 });

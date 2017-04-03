@@ -1,6 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var mongodb = require('mongodb');
+const cors = require('cors');
+router.use(cors());
+
 
 
 
