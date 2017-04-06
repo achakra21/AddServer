@@ -6,6 +6,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+
 // Used to connect to the MongoDB database
 var mongo = require('mongodb')
 
@@ -19,6 +20,8 @@ var admin = require('./routes/admin');
 var util = require('./routes/util');
  
 var app = express();
+app.use(bodyParser.json({limit: '100mb'}));
+app.use(bodyParser.urlencoded({limit: '100mb', extended: true}));
 
  
 // Define the directory with the views and to use Jade
