@@ -15,9 +15,76 @@ var MongoClient = mongodb.MongoClient;
 var url = 'mongodb://localhost:27017/AddServer';
 
 
+router.get('/validateadmincredentials', function (req, res) {
+
+  response = {
+    email: req.query.email
+  };
+
+  MongoClient.connect(url, function (err, db) {
+    if (err) {
+      console.log('Unable to connect to the mongoDB server. Error:', err);
+    } else {
+
+      console.log('Connection established to', url);
 
 
-router.post('/uploadbimage', function (req, res) {
+      var collection = db.collection('admin-users-profile');
+      var find = new Promise(function (resolve, reject) {
+        collection.findOne({ email: response.email }, function (err, document) {
+
+
+          console.log('inside');
+
+
+          if (document === "undefined" || document === null) {
+
+            reject(err);
+            console.log('Email does not exits!!!!');
+            res.status(401);
+            res.send('User does not exits!!');
+            res.end('Email does not exits!!!!');
+          }
+
+          else {
+            resolve(db);
+            if (document.password === req.query.password) {
+              res.status(201);
+              res.send('sucess');
+              res.end('ok');
+            }
+
+            else{
+
+            console.log('password does not exits!!!!');
+            res.status(401,{error:'password does not exits!!'});
+            res.send('password does not exits!!');
+            res.end('password does not exits!!!!');
+
+            }
+
+          }
+
+        });
+
+      });
+
+      find.then(function (db) {
+
+        db.close();
+      });
+
+    }
+ });
+
+});
+
+
+
+
+
+
+router.post('/uploadimage', function (req, res) {
 
     //always use forward slashes while giving the file path in windows
 
