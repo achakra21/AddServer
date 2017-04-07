@@ -88,6 +88,8 @@ router.post('/uploadimage', function (req, res) {
 
     //always use forward slashes while giving the file path in windows
 
+    console.log()
+
     var shopName = req.body.shopName;
     var shopAddress = req.body.shopAddress;
     var description = req.body.description;

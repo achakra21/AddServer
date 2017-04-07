@@ -18,6 +18,8 @@ var users = require('./routes/users');
 var admin = require('./routes/admin');
 
 var util = require('./routes/util');
+
+var user_dashboard = require('./routes/user_dashboard');
  
 var app = express();
 app.use(bodyParser.json({limit: '100mb'}));
@@ -46,6 +48,7 @@ app.use('/', routes);
 app.use('/', users);
 app.use('/', admin);
 app.use('/', util);
+app.use('/', user_dashboard);
 console.log("The Value of Appadadasd",""+ app);
  
 // catch 404 and forward to error handler
